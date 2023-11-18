@@ -36,3 +36,21 @@ def go_to_festival(env, festival_goer, festival):
         yield env.process(festival.ticket_scan(festival_goer))
     
     waiting_time.append(env.now - arrival_time) # calculates total waiting time of the festival-goer
+
+# Creating a function that runs the festival and generates agents
+def run_festival(env, servers):
+    """ 
+    This function generates 3 people waiting outside before the festival opens and begin moving them through the system.
+    This function also creates a new person in an interval of 12 seconds abd move through the system at their own time.
+    """
+
+    festival = Festival(env, servers)
+
+    for festival_goer in range(3): # 3 is the number of people already waiting in the queue when the festival opens
+        env.process(go_to_festival(env, festival_goer, festival))
+    
+    while True:
+        yield env.timeout(0,20) # wait before generating a new personn. 0.20 represents 12 seconds since 12 seconds divided by 60 seconds is 0.20.
+        festival_goer += 1
+        env.process(go_to_festival(env, festival_goer, festival))
+        
