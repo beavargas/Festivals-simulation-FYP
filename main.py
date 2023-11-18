@@ -53,4 +53,16 @@ def run_festival(env, servers):
         yield env.timeout(0,20) # wait before generating a new personn. 0.20 represents 12 seconds since 12 seconds divided by 60 seconds is 0.20.
         festival_goer += 1
         env.process(go_to_festival(env, festival_goer, festival))
-        
+
+
+# Creating a function that calculates the average waiting time
+def average_waiting_time(waiting_time):
+    """
+    This function takes the waiting_time list as an argument and outputs the average wait time.
+    It then converts it to minutes and seconds to make the output understandable for the user
+    """
+    average_wait = statistics.mean(waiting_time)
+
+    minutes, frac_minutes = divmod(average_wait, 1)
+    seconds = frac_minutes * 60
+    return round(minutes), round(seconds)
