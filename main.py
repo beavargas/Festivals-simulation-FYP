@@ -14,7 +14,7 @@ class Festival(object):
 
     def __init__(self, env, servers):
         self.env = env
-        self.server = simpy.Resource(env, capacity=10)
+        self.server = simpy.Resource(env, capacity=servers)
 
     def ticket_scan(self, festival_goer):
         yield self.env.timeout(random.randint(1,3)) # randomly assigns each ticket scan a time between 1 and 3
@@ -66,3 +66,20 @@ def average_waiting_time(waiting_time):
     minutes, frac_minutes = divmod(average_wait, 1)
     seconds = frac_minutes * 60
     return round(minutes), round(seconds)
+
+def main():
+    # set up
+    random.seed(42)
+
+    # run simulation
+    env = simpy.Environment()
+    env.process(run_festival(env, servers=3))
+    env.run(until=90)
+
+    # view output
+    mins, secs = average_waiting_time(waiting_time)
+    print("The average wait time is {mins} minutes and {secs} seconds.")
+
+if __name__ == '__main__':
+    main()
+
