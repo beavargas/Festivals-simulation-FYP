@@ -5,6 +5,7 @@ This code return the average waiting time given an number of servers.
 import simpy
 import statistics
 import random
+import matplotlib.pyplot as plt
 
 # List to collect the total amount of time each festival-goer spends from arrival to entering the festival
 waiting_time = []
@@ -69,17 +70,33 @@ def average_waiting_time(waiting_time):
 
 def main():
     # set up
-    random.seed(42)
-    servers = 5
+    with open("params.txt", "r") as file:
+        server_values = [int(line.strip()) for line in file]
 
-    # run simulation
-    env = simpy.Environment()
-    env.process(run_festival(env, servers))
-    env.run(until=90)
+    average_wait_times = []
 
-    # view output
-    mins, secs = average_waiting_time(waiting_time)
-    print(f"The average wait time is {mins} minutes and {secs} seconds.")
+    for servers in server_values:
+        random.seed(42)
+    
+
+        # run simulation
+        env = simpy.Environment()
+        env.process(run_festival(env, servers))
+        env.run(until=90)
+
+        # view output
+        mins, secs = average_waiting_time(waiting_time)
+        #print(f"The average wait time is {mins} minutes and {secs} seconds.")
+
+        average_wait_times.append((mins, secs))
+    
+    # Plotting
+    plt.plot(server_values, [mins for mins, _ in average_wait_times], marker='o')
+    plt.xlabel('Number of Servers')
+    plt.ylabel('Average Wait Time (minutes)')
+    plt.title('Average Wait Time vs. Number of Servers')
+    plt.grid(True)
+    plt.show()
 
 if __name__ == '__main__':
     main()
