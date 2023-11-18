@@ -50,7 +50,7 @@ def run_festival(env, servers):
         env.process(go_to_festival(env, festival_goer, festival))
     
     while True:
-        yield env.timeout(0,20) # wait before generating a new personn. 0.20 represents 12 seconds since 12 seconds divided by 60 seconds is 0.20.
+        yield env.timeout(0.20) # wait before generating a new personn. 0.20 represents 12 seconds since 12 seconds divided by 60 seconds is 0.20.
         festival_goer += 1
         env.process(go_to_festival(env, festival_goer, festival))
 
@@ -70,15 +70,16 @@ def average_waiting_time(waiting_time):
 def main():
     # set up
     random.seed(42)
+    servers = 5
 
     # run simulation
     env = simpy.Environment()
-    env.process(run_festival(env, servers=3))
+    env.process(run_festival(env, servers))
     env.run(until=90)
 
     # view output
     mins, secs = average_waiting_time(waiting_time)
-    print("The average wait time is {mins} minutes and {secs} seconds.")
+    print(f"The average wait time is {mins} minutes and {secs} seconds.")
 
 if __name__ == '__main__':
     main()
