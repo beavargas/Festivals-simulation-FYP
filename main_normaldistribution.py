@@ -6,7 +6,7 @@ import simpy
 import statistics
 import random
 import matplotlib.pyplot as plt
-
+ 
 # List to collect the total amount of time each festival-goer spends from arrival to entering the festival
 waiting_time = []
 
@@ -113,5 +113,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
-
