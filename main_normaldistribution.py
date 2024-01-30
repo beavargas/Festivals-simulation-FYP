@@ -39,7 +39,7 @@ def go_to_festival(env, festival_goer, festival):
     waiting_time.append(env.now - arrival_time) # calculates total waiting time of the festival-goer
 
 # Creating a function that runs the festival and generates agents
-def run_festival(env, servers):
+def run_festival(env, servers, mean_interarrival, std_interarrival):
     """ 
     This function generates 3 people waiting outside before the festival opens and begin moving them through the system.
     This function also creates a new person in an interval of 12 seconds abd move through the system at their own time.
@@ -51,7 +51,9 @@ def run_festival(env, servers):
         env.process(go_to_festival(env, festival_goer, festival))
     
     while True:
-        yield env.timeout(0.20) # wait before generating a new personn. 0.20 represents 12 seconds since 12 seconds divided by 60 seconds is 0.20.
+        interarrival_time = max(0, random.normalvariate(mean_interarrival, std_interarrival))
+
+        yield env.timeout(interarrival_time) # wait before generating a new personn. 0.20 represents 12 seconds since 12 seconds divided by 60 seconds is 0.20.
         festival_goer += 1
         env.process(go_to_festival(env, festival_goer, festival))
         #print(festival_goer)
@@ -86,7 +88,7 @@ def main():
 
         # run simulation
         env = simpy.Environment()
-        env.process(run_festival(env, servers))
+        env.process(run_festival(env, servers, mean_interarrival=0.5, std_interarrival=0.05))
         env.run(until=90)
        
 
@@ -101,7 +103,7 @@ def main():
     
     mins, secs = zip(*average_wait_times)
     # Plotting
-    plt.errorbar(secs, mins, yerr=std_devs, fmt='o', capsize=5)
+    plt.errorbar(secs, mins, yerr=std_devs, fmt='o', capsize=3)
     plt.plot(server_values, [mins for mins, _ in average_wait_times], marker='o')
     plt.xlabel('Number of Servers')
     plt.ylabel('Average Wait Time (minutes)')
