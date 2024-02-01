@@ -52,8 +52,7 @@ def run_festival(env, servers, mean_interarrival, std_interarrival):
     
     while True:
         interarrival_time = max(0, random.normalvariate(mean_interarrival, std_interarrival))
-
-        yield env.timeout(interarrival_time) # wait before generating a new personn. 0.20 represents 12 seconds since 12 seconds divided by 60 seconds is 0.20.
+        yield env.timeout(interarrival_time) 
         festival_goer += 1
         env.process(go_to_festival(env, festival_goer, festival))
         #print(festival_goer)
@@ -84,7 +83,6 @@ def main():
 
     for servers in server_values:
         random.seed(42)
-    
 
         # run simulation
         env = simpy.Environment()
@@ -111,7 +109,12 @@ def main():
     plt.grid(True)
     plt.show()
 
+
+
+
     
 
 if __name__ == '__main__':
     main()
+
+    
