@@ -1,11 +1,13 @@
 """
-Simple queuing model using simpy
+Queuing model using simpy
+Normal distribution for server times and interarrival times
 This code return the average waiting time given an number of servers.
 """
 import simpy
 import statistics
 import random
 import matplotlib.pyplot as plt
+import numpy as np
  
 # List to collect the total amount of time each festival-goer spends from arrival to entering the festival
 waiting_time = []
@@ -13,12 +15,16 @@ waiting_time = []
 # Creating the 'Festival' enviroment as a class
 class Festival(object):
 
-    def __init__(self, env, servers):
+    def __init__(self, env, servers, mean_scan_time, std_scan_time):
         self.env = env
         self.server = simpy.Resource(env, capacity=servers)
+        self.mean_scan_time = mean_scan_time
+        self.std_scan_time = std_scan_time
 
     def ticket_scan(self, festival_goer):
-        yield self.env.timeout(random.randint(1,3)) # randomly assigns each ticket scan a time between 1 and 3
+        scanning_time = np.random.normal(self.mean_scan_time, self.std_scan_time)
+        scanning_time = np.clip(scanning_time, 0.1, 5)
+        yield self.env.timeout(scanning_time) 
 
 # Creating a function for the agent to move through the enviroment
 def go_to_festival(env, festival_goer, festival):
@@ -45,7 +51,7 @@ def run_festival(env, servers, mean_interarrival, std_interarrival):
     This function also creates a new person in an interval of 12 seconds abd move through the system at their own time.
     """
 
-    festival = Festival(env, servers)
+    festival = Festival(env, servers, mean_scan_time=1,std_scan_time=0.8)
 
     for festival_goer in range(3): # 3 is the number of people already waiting in the queue when the festival opens
         env.process(go_to_festival(env, festival_goer, festival))
@@ -108,11 +114,8 @@ def main():
     plt.title('Average Wait Time vs. Number of Servers')
     plt.grid(True)
     plt.show()
-
-
-
-
     
+  
 
 if __name__ == '__main__':
     main()
