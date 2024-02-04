@@ -39,8 +39,8 @@ def go_to_festival(env, festival_goer, festival):
     arrival_time = env.now 
 
     with festival.server.request() as request: # with statement automatically releases the festival goer once the process is complete
-        yield request
-        yield env.process(festival.ticket_scan(festival_goer))
+        yield request # puts the festival-goer in a waiting state until a server becomes available.
+        yield env.process(festival.ticket_scan(festival_goer)) #  yields the process of getting the ticket scanned by calling the ticket_scan method of the Festival class.
     
     waiting_time.append(env.now - arrival_time) # calculates total waiting time of the festival-goer
 
