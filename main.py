@@ -3,6 +3,10 @@ import json
 import pandas as pandas
 import random
 import simpy
+from Festival import Festival
+from Festival import go_to_festival
+from Festival import run_festival
+
 
 
 # The following function loads the config.json file
@@ -18,7 +22,9 @@ def main():
     # Creating a list that stores dictionaries for each simulation run
     simulation_data = []
 
-    for servers in config['server_values']:
+    for servers in config["server_values"]:
+
+        server_i_data = []
 
         random.seed(42)
 
@@ -29,7 +35,7 @@ def main():
         festival = Festival(env, servers, config["mean_scan_time"], config["std_scan_time"])
 
         # Running the festival simulation process
-        env.process(run_festival(env, festival, config['mean_interarrival'], config['std_interarrival']))
+        env.process(run_festival(env, servers, config['mean_interarrival'], config['std_interarrival'],  config["total festival goers"], festival))
     
         # Running the simulation until a specified duration
         env.run(until=config['simulation_duration'])
