@@ -1,0 +1,7 @@
+
+{
+  "mean_interarrival": 0.5,
+  "std_interarrival": 0.05,
+  "simulation_duration": 90,
+  "server_values": [1, 2, 3, 4, 5]
+}
