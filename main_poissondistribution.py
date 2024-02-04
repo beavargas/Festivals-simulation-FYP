@@ -1,6 +1,6 @@
 """
 Queuing model using simpy
-Normal distribution for server times and interarrival times
+Poisson distribution for server times and interarrival times
 This code return the average waiting time given an number of servers.
 """
 import simpy
@@ -15,14 +15,14 @@ waiting_time = []
 # Creating the 'Festival' enviroment as a class
 class Festival(object):
 
-    def __init__(self, env, servers, mean_scan_time, std_scan_time):
+    def __init__(self, env, servers, arrival_rate):
         self.env = env
         self.server = simpy.Resource(env, capacity=servers)
-        self.mean_scan_time = mean_scan_time
-        self.std_scan_time = std_scan_time
+        self.arrival_rate = arrival_rate
+       
 
     def ticket_scan(self, festival_goer):
-        scanning_time = np.random.normal(self.mean_scan_time, self.std_scan_time)
+        scanning_time = np.random.poisson(self.arrival_rate)
         scanning_time = np.clip(scanning_time, 0.1, 5)
         yield self.env.timeout(scanning_time) 
 
@@ -58,10 +58,10 @@ def run_festival(env, servers, mean_interarrival, std_interarrival):
     
     while True:
         interarrival_time = max(0, random.normalvariate(mean_interarrival, std_interarrival))
+        interarrival_time = max(0, np.random.poisson(mean_interarrival))
         yield env.timeout(interarrival_time) 
         festival_goer += 1
         env.process(go_to_festival(env, festival_goer, festival))
-        #print(festival_goer)
     
     
     
@@ -107,13 +107,8 @@ def main():
     
     mins, secs = zip(*average_wait_times)
     # Plotting
-    #plt.errorbar(secs, mins, yerr=std_devs, fmt='o', capsize=3)
-    #plt.plot(server_values, [mins for mins, _ in average_wait_times], marker='o')
-    #plt.scatter(server_values, [mins for mins, _ in average_wait_times], marker='o', label='Average Wait Time')
-    print(len(waiting_time))
-    print(len(server_values))
-
-    plt.scatter(server_values, waiting_time)
+    plt.errorbar(secs, mins, yerr=std_devs, fmt='o', capsize=3)
+    plt.plot(server_values, [mins for mins, _ in average_wait_times], marker='o')
     plt.xlabel('Number of Servers')
     plt.ylabel('Average Wait Time (minutes)')
     plt.title('Average Wait Time vs. Number of Servers')
@@ -124,5 +119,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-    
