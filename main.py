@@ -1,8 +1,9 @@
 # Main file 
 import json
-import pandas as pandas
+#import pandas as pd
 import random
 import simpy
+import numpy as np
 from Festival import Festival
 from Festival import go_to_festival
 from Festival import run_festival
@@ -20,8 +21,8 @@ def main():
     config = load_config('config.json')
 
     # Creating a list that stores dictionaries for each simulation run
-    simulation_data = []
-
+    simulation_data = np.zeros(config["total_festival_goers"])
+    
     for servers in config["server_values"]:
 
         server_i_data = []
@@ -29,19 +30,31 @@ def main():
         random.seed(42)
 
         # Creating a simulation enviroment
-        env = simpy.Enviroment()
+        env = simpy.Environment()
 
         # Creating a Festival instance
-        festival = Festival(env, servers, config["mean_scan_time"], config["std_scan_time"])
+        festival = Festival(env, servers, config["mean_scan_time"], config["std_scan_time"], server_i_data, config["total_festival_goers"])
 
         # Running the festival simulation process
-        env.process(run_festival(env, servers, config['mean_interarrival'], config['std_interarrival'],  config["total festival goers"], festival))
+        env.process(run_festival(env, servers, config['mean_interarrival'], config['std_interarrival'],  config["total_festival_goers"], festival))
     
         # Running the simulation until a specified duration
         env.run(until=config['simulation_duration'])
 
+        # Accessing the waiting times array for each festival goer
+        waiting_time_i_servers = festival.get_waiting_times_per_server()
 
-    return
+        # Adding the array for i number of servers to the simulation data matrix
+        simulation_data = np.vstack((simulation_data, waiting_time_i_servers))
+
+    
+    simulation_data = simulation_data[1:] # to remove first row of zeros
+    print(simulation_data)
+
+    # Store simulation data in a json file
+    with open('simulation_data.json', 'w') as file:
+        json.dump(simulation_data.tolist(), file, indent=1)
 
 if __name__ == '__main__':
     main()
+    
