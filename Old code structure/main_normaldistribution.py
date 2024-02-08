@@ -54,7 +54,7 @@ def run_festival(env, servers, mean_interarrival, std_interarrival):
     festival = Festival(env, servers, mean_scan_time=1,std_scan_time=0.8)
 
     for festival_goer in range(3): # 3 is the number of people already waiting in the queue when the festival opens
-        env.process(go_to_festival(env, festival_goer, festival))
+        env.process(go_to_festival(env, festival_goer, festival))  
     
     while True:
         interarrival_time = max(0, random.normalvariate(mean_interarrival, std_interarrival))
