@@ -1,9 +1,10 @@
 
-{
-  "number of festival goers": 100,
+
+{ 
+  "total_festival_goers": 100,
   "mean_interarrival": 0.5,
   "std_interarrival": 0.05,
-  "simulation_duration": 90,
+  "simulation_duration": 150,
   "mean_scan_time": 1,
   "std_scan_time": 0.7,
   "server_values": [1, 2, 3, 4, 5]
