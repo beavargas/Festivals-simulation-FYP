@@ -1,1 +1,0 @@
-# Visualizing the data of the simulation
