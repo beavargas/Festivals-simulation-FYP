@@ -4,9 +4,12 @@ import json
 import random
 import simpy
 import numpy as np
-from Festival import Festival
-from Festival import go_to_festival
-from Festival import run_festival
+from Normal_Festival import Festival
+from Normal_Festival import go_to_festival
+from Normal_Festival import run_festival
+#from Simple_Festival import Festival
+#from Simple_Festival import go_to_festival
+#from Simple_Festival import run_festival
 
 
 
