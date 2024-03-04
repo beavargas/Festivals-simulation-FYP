@@ -6,16 +6,15 @@ import numpy as np
 
 class Festival(object):
 
-    def __init__(self, env, servers, mean_scan_time, std_scan_time, waiting_times_per_server,  total_festival_goers):
+    def __init__(self, env, servers, lamda_scan_time, waiting_times_per_server,  total_festival_goers):
         self.env = env
         self.server = simpy.Resource(env, capacity=servers)
-        self.mean_scan_time = mean_scan_time
-        self.std_scan_time = std_scan_time
+        self.lamda_scan_time = lamda_scan_time
         self.waiting_times_per_server = []
         self.total_festival_goers = total_festival_goers
     
     def ticket_scan(self):
-        scanning_time = max(0, np.random.normal(self.mean_scan_time, self.std_scan_time)) # HERE 
+        scanning_time = max(0, np.random.poisson(self.lamda_scan_time))
         
         yield self.env.timeout(scanning_time)
 
@@ -35,10 +34,10 @@ def go_to_festival(env, festival):
     festival.waiting_times_per_server.append(festival_goer_waiting_time)
     return festival_goer_waiting_time
 
-def run_festival(env, servers, mean_interarrival, std_interarrival, total_festival_goers, festival):
+def run_festival(env, servers, lamda_interarrival, total_festival_goers, festival):
     festival_goer = 1
     while festival_goer <= total_festival_goers:
-        interarrival_time = max(0, random.normalvariate(mean_interarrival, std_interarrival)) # HERE
+        interarrival_time = max(0, np.random.poisson(lamda_interarrival))
         yield env.timeout(interarrival_time)
         env.process(go_to_festival(env, festival))
         festival_goer += 1
