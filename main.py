@@ -38,7 +38,10 @@ def main():
         env = simpy.Environment()
 
         # Creating a Festival instance
-        festival = Festival(env, servers, config["mean_scan_time"], config["std_scan_time"], server_i_data, config["total_festival_goers"])
+        #festival = Festival(env, servers, config["mean_scan_time"], config["std_scan_time"], server_i_data, config["total_festival_goers"])
+
+        festival = Festival(env, servers, config["mean_security_time"], config["std_security_time"], config["mean_scan_time"], config["std_scan_time"], server_i_data, config["total_festival_goers"])
+
         #festival = Festival(env, servers, config["lamda_scan_time"], server_i_data, config["total_festival_goers"] )
         # Running the festival simulation process
         #env.process(run_festival(env, servers, config['mean_interarrival'], config['std_interarrival'],  config["total_festival_goers"], festival))
