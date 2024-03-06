@@ -45,13 +45,28 @@ def go_to_festival(env, festival):
     festival.waiting_times_per_server.append(festival_goer_waiting_time)
     return festival_goer_waiting_time
 
-def run_festival(env, servers, lamda_interarrival, total_festival_goers, festival):
-    festival_goer = 1
+def run_festival(env, servers, lamda_interarrival, total_festival_goers, mean_group_size, std_group_size, festival):
+    festival_goer = 0
     while festival_goer <= total_festival_goers:
         interarrival_time = max(0, np.random.poisson(lamda_interarrival))
-        yield env.timeout(interarrival_time)
-        env.process(go_to_festival(env, festival))
-        festival_goer += 1
+
+        group_size = max(1, round(random.normalvariate(mean_group_size, std_group_size)))
+
+        remaining_people = total_festival_goers - festival_goer
+
+        group_size = min(group_size, remaining_people)
+    
+        for person in range(group_size):
+                yield env.timeout(interarrival_time)
+                env.process(go_to_festival(env, festival))
+                print(interarrival_time)
+            
+        festival_goer += group_size
+        print(festival_goer)
+
+        if festival_goer >= total_festival_goers:
+            break
+        
 
         
 
