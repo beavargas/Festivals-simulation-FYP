@@ -4,13 +4,15 @@ import json
 import random
 import simpy
 import numpy as np
-from Normal_Festival import Festival
-from Normal_Festival import go_to_festival
-from Normal_Festival import run_festival
+#from Normal_Festival import Festival
+#from Normal_Festival import go_to_festival
+#from Normal_Festival import run_festival
 #from Simple_Festival import Festival
 #from Simple_Festival import go_to_festival
 #from Simple_Festival import run_festival
-
+from Poisson_Festival import Festival
+from Poisson_Festival import go_to_festival
+from Poisson_Festival import run_festival
 
 
 # The following function loads the config.json file
@@ -37,18 +39,22 @@ def main():
 
         # Creating a Festival instance
         festival = Festival(env, servers, config["mean_scan_time"], config["std_scan_time"], server_i_data, config["total_festival_goers"])
-
+        #festival = Festival(env, servers, config["lamda_scan_time"], server_i_data, config["total_festival_goers"] )
         # Running the festival simulation process
-        env.process(run_festival(env, servers, config['mean_interarrival'], config['std_interarrival'],  config["total_festival_goers"], festival))
-    
+        #env.process(run_festival(env, servers, config['mean_interarrival'], config['std_interarrival'],  config["total_festival_goers"], festival))
+        env.process(run_festival(env, servers, config["lamda_interarrival"], config["total_festival_goers"], festival))
         # Running the simulation until a specified duration
         env.run(until=config['simulation_duration'])
 
         # Accessing the waiting times array for each festival goer
         waiting_time_i_servers = festival.get_waiting_times_per_server()
-
+        print("waiting_time_i_servers")
+        print(waiting_time_i_servers)
+        
         # Adding the array for i number of servers to the simulation data matrix
         simulation_data = np.vstack((simulation_data, waiting_time_i_servers))
+        print("simualtion data")
+        print(simulation_data)
 
     
     simulation_data = simulation_data[1:] # to remove first row of zeros
