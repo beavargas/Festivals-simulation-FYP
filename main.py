@@ -4,9 +4,9 @@ import json
 import random
 import simpy
 import numpy as np
-#from Normal_Festival import Festival, go_to_festival, run_festival
 #from Simple_Festival import Festival, go_to_festival, run_festival
-from Poisson_Festival import Festival, go_to_festival, run_festival
+from Normal_Festival import Festival, go_to_festival, run_festival
+#from Poisson_Festival import Festival, go_to_festival, run_festival
 
 
 # The following function loads the config.json file
@@ -32,31 +32,36 @@ def main():
         env = simpy.Environment()
 
         # Creating a Festival instance
-        festival = Festival(env, servers, config["mean_security_time"], config["std_security_time"], config["mean_scan_time"], config["std_scan_time"], server_i_data, config["total_festival_goers"])
-
+        #festival = Festival(env, servers, server_i_data, config["total_festival_goers"])
         #festival = Festival(env, servers, config["mean_security_time"], config["std_security_time"], config["mean_scan_time"], config["std_scan_time"], server_i_data, config["total_festival_goers"])
-
-        #festival = Festival(env, servers, config["lamda_scan_time"], server_i_data, config["total_festival_goers"] )
+        festival = Festival(env, servers, config["mean_security_time"], config["std_security_time"], config["mean_scan_time"], config["std_scan_time"], server_i_data, config["total_festival_goers"])        
+        
         # Running the festival simulation process
-        #env.process(run_festival(env, servers, config['mean_interarrival'], config['std_interarrival'],  config["total_festival_goers"], config["mean_group_size"], config["std_group_size"], festival))
-        env.process(run_festival(env, servers, config["lamda_interarrival"], config["total_festival_goers"], config["mean_group_size"], config["std_group_size"], festival))
+        #env.process(run_festival(env, servers, config["total_festival_goers"], festival))
+        env.process(run_festival(env, servers, config['mean_interarrival'], config['std_interarrival'],  config["total_festival_goers"], config["mean_group_size"], config["std_group_size"], festival))
+        #env.process(run_festival(env, servers, config["lamda_interarrival"], config["total_festival_goers"], config["mean_group_size"], config["std_group_size"], festival))
         
         # Running the simulation until a specified duration
         env.run(until=config['simulation_duration'])
 
         # Accessing the waiting times array for each festival goer
         waiting_time_i_servers = festival.get_waiting_times_per_server()
-        print("waiting_time_i_servers")
-        print(waiting_time_i_servers)
+        #print("waiting_time_i_servers")
+        #print(waiting_time_i_servers)
         
         # Adding the array for i number of servers to the simulation data matrix
-        simulation_data = np.vstack((simulation_data, waiting_time_i_servers))
-        print("simualtion data")
-        print(simulation_data)
+        try:
+            simulation_data = np.vstack((simulation_data, waiting_time_i_servers))
+        except ValueError:
+            print("Error in vertical stacking. Ending simulation.")
+            break
+        #simulation_data = np.vstack((simulation_data, waiting_time_i_servers))
+        #print("simualtion data")
+        #print(simulation_data)
 
     
     simulation_data = simulation_data[1:] # to remove first row of zeros
-    print(simulation_data)
+    #print(simulation_data)
 
     # Store simulation data in a json file
     with open('simulation_data.json', 'w') as file:
