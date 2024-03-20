@@ -1,11 +1,11 @@
 
 
 { 
-  "total_festival_goers": 200,
+  "total_festival_goers": 500,
   "mean_interarrival": 1,
   "std_interarrival": 0.7,
   "lamda_interarrival": 1.5,
-  "simulation_duration": 400,
+  "simulation_duration": 90000,
   "mean_group_size": 4,
   "std_group_size": 2,
   "mean_security_time": 0.17,
