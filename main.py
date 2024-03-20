@@ -5,8 +5,9 @@ import random
 import simpy
 import numpy as np
 #from Simple_Festival import Festival, go_to_festival, run_festival
-from Normal_Festival import Festival, go_to_festival, run_festival
+#from Normal_Festival import Festival, go_to_festival, run_festival
 #from Poisson_Festival import Festival, go_to_festival, run_festival
+from Multimodal_Festival import Festival, go_to_festival, run_festival
 
 
 # The following function loads the config.json file
@@ -23,7 +24,7 @@ def main():
     simulation_data = np.zeros(config["total_festival_goers"])
     
     for servers in config["server_values"]:
-
+        print("new servers round")
         server_i_data = []
 
         random.seed(42)
@@ -38,8 +39,8 @@ def main():
         
         # Running the festival simulation process
         #env.process(run_festival(env, servers, config["total_festival_goers"], festival))
-        env.process(run_festival(env, servers, config['mean_interarrival'], config['std_interarrival'],  config["total_festival_goers"], config["mean_group_size"], config["std_group_size"], festival))
-        #env.process(run_festival(env, servers, config["lamda_interarrival"], config["total_festival_goers"], config["mean_group_size"], config["std_group_size"], festival))
+        #env.process(run_festival(env, servers, config['mean_interarrival'], config['std_interarrival'],  config["total_festival_goers"], config["mean_group_size"], config["std_group_size"], festival))
+        env.process(run_festival(env, servers, config["lamda_interarrival"], config["total_festival_goers"], config["mean_group_size"], config["std_group_size"], festival))
         
         # Running the simulation until a specified duration
         env.run(until=config['simulation_duration'])
