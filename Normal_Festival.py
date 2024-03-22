@@ -62,10 +62,10 @@ def run_festival(env, servers, mean_interarrival, std_interarrival, total_festiv
         for person in range(group_size):
                 yield env.timeout(interarrival_time)
                 env.process(go_to_festival(env, festival))
-                print(interarrival_time)
+                #print(interarrival_time)
             
         festival_goer += group_size
-        print(festival_goer)
+        #print(festival_goer)
 
         if festival_goer >= total_festival_goers:
             break
