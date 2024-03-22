@@ -24,7 +24,7 @@ def main():
     simulation_data = np.zeros(config["total_festival_goers"])
     
     for servers in config["server_values"]:
-        print("new servers round")
+        #print("new servers round")
         server_i_data = []
 
         random.seed(42)
