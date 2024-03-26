@@ -5,8 +5,7 @@ import numpy as np
 import pandas as pd
 import random
 
-def run_experiment(num_runs):
-    random.seed(42)
+def run_experiment(num_runs):    
     mean_waiting_times = []
     std_waiting_times = []
     simulation_sample_means = []
