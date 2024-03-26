@@ -21,7 +21,7 @@ class Festival(object):
     
     def security_check(self):
         #security_time = max(0, np.random.normal(self.mean_security_time, self.std_security_time))
-        if np.random.rand() < 0.99:  # randomly select between short and long scan
+        if np.random.rand() < 0.90:  # randomly select between short and long scan
             security_time = max(0, np.random.normal(self.mean_security_time_short, self.std_security_time_short))
         else:
             security_time = max(0, np.random.normal(self.mean_security_time_long, self.std_security_time_long))
@@ -57,7 +57,7 @@ def run_festival(env, servers, lamda_interarrival, total_festival_goers, mean_gr
     while festival_goer <= total_festival_goers:
         interarrival_time = max(0, np.random.poisson(lamda_interarrival))
 
-        group_size = max(1, round(random.normalvariate(mean_group_size, std_group_size)))
+        group_size = max(1, round(np.random.normal(mean_group_size, std_group_size)))
 
         remaining_people = total_festival_goers - festival_goer
 
