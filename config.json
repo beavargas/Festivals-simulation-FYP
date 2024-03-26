@@ -1,17 +1,24 @@
 
 
 { 
-  "total_festival_goers": 100,
+  "total_festival_goers": 200,
+  "simulation_duration": 90000,
+  "server_values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+
   "mean_interarrival": 1,
   "std_interarrival": 0.7,
   "lamda_interarrival": 1.5,
-  "simulation_duration": 90000,
+  
   "mean_group_size": 4,
   "std_group_size": 2,
-  "mean_security_time": 0.17,
-  "std_security_time": 0.1325,
+
+  "mean_security_time_short": 0.1,
+  "std_security_time_short": 0.1325,
+  "mean_security_time_long": 2,
+  "std_security_time_long": 1,
+  
   "mean_scan_time": 0.17,
   "std_scan_time": 0.1325,
-  "lamda_scan_time": 1, 
-  "server_values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+  "lamda_scan_time": 1 
+  
 }
