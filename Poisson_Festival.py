@@ -6,24 +6,31 @@ import numpy as np
 
 class Festival(object):
 
-    def __init__(self, env, servers, mean_security_time, std_security_time, mean_scan_time, std_scan_time, waiting_times_per_server,  total_festival_goers):
+    def __init__(self, env, servers, mean_security_time_short, std_security_time_short, mean_security_time_long, std_security_time_long, mean_scan_time, std_scan_time, waiting_times_per_server,  total_festival_goers):
         self.env = env
         self.server = simpy.Resource(env, capacity=servers)
         
-        self.mean_security_time = mean_security_time
-        self.std_security_time = std_security_time
+        self.mean_security_time_short = mean_security_time_short
+        self.std_security_time_short = std_security_time_short
+        self.mean_security_time_long = mean_security_time_long
+        self.std_security_time_long = std_security_time_long
         self.mean_scan_time = mean_scan_time
         self.std_scan_time = std_scan_time
         self.waiting_times_per_server = []
         self.total_festival_goers = total_festival_goers
     
     def security_check(self):
-        security_time = max(0, np.random.normal(self.mean_security_time, self.std_security_time))
+        #security_time = max(0, np.random.normal(self.mean_security_time, self.std_security_time))
+        if np.random.rand() < 0.99:  # randomly select between short and long scan
+            security_time = max(0, np.random.normal(self.mean_security_time_short, self.std_security_time_short))
+        else:
+            security_time = max(0, np.random.normal(self.mean_security_time_long, self.std_security_time_long))
+        
         yield self.env.timeout(security_time)
     
     def ticket_scan(self):
-        #scanning_time = max(0, np.random.poisson(self.lamda_scan_time))
         scanning_time = max(0, np.random.normal(self.mean_scan_time, self.std_scan_time))
+        
         yield self.env.timeout(scanning_time)
 
     def get_waiting_times_per_server(self):
@@ -59,10 +66,10 @@ def run_festival(env, servers, lamda_interarrival, total_festival_goers, mean_gr
         for person in range(group_size):
                 yield env.timeout(interarrival_time)
                 env.process(go_to_festival(env, festival))
-                print(interarrival_time)
+                #print(interarrival_time)
             
         festival_goer += group_size
-        print(festival_goer)
+        #print(festival_goer)
 
         if festival_goer >= total_festival_goers:
             break
