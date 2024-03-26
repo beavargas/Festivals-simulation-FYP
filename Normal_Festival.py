@@ -26,7 +26,6 @@ class Festival(object):
         yield self.env.timeout(scanning_time)
 
     def get_waiting_times_per_server(self):
-        #return(self.get_waiting_times_per_server)
         return np.array(self.waiting_times_per_server)
 
 def go_to_festival(env, festival):
