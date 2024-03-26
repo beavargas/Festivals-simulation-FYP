@@ -3,8 +3,10 @@ import json
 from main import main
 import numpy as np
 import pandas as pd
+import random
 
 def run_experiment(num_runs):
+    random.seed(42)
     mean_waiting_times = []
     std_waiting_times = []
     simulation_sample_means = []
@@ -37,29 +39,15 @@ def run_experiment(num_runs):
     df_std_waiting_times = pd.DataFrame(std_waiting_times).T
     #print(df_std_waiting_times)
 
-    a = df_mean_waiting_times.to_json('simulation_sample_means.json')
+    a = df_mean_waiting_times.to_json('RESULTS_Simple_Model.json')
  
-    
-    #for index, row in df_mean_waiting_times.iterrows():
-        #sample_mean = row.mean()
-        #sample_std = row.std()
-        #simulation_sample_means.append(sample_mean)
-        #simulation_sample_std.append(sample_std)
-    
-    
-    
-    #with open('simulation_sample_means.json', 'w') as file:
-        #json.dump(simulation_sample_means, file, indent=1)
-    
-    #with open('simulation_sample_std.json', 'w') as file:
-        #json.dump(simulation_sample_std, file, indent=1)
 
 
             
         
             
 if __name__ == '__main__':
-    run_experiment(50)
+    run_experiment(100)
     
 
 
