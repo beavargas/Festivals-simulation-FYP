@@ -13,11 +13,13 @@ class Festival(object):
         self.total_festival_goers = total_festival_goers
 
     def ticket_scan(self):
-        yield self.env.timeout(random.randint(1,3)) 
+        scan_time = self.env.timeout(np.random.uniform(0,4)) 
+        
+        yield scan_time
+        
         
 
     def get_waiting_times_per_server(self):
-        #return(self.get_waiting_times_per_server)
         return np.array(self.waiting_times_per_server)
 
 def go_to_festival(env, festival):
@@ -33,18 +35,13 @@ def go_to_festival(env, festival):
     return festival_goer_waiting_time
 
 def run_festival(env, servers, total_festival_goers, festival):
-    #festival_goer = 1
-    #while festival_goer <= total_festival_goers:
-        
-    #    yield env.timeout(interarrival_time)
-    #    env.process(go_to_festival(env, festival))
-    #    festival_goer += 1
-    
+   
     festival_goer = 0
     while festival_goer <= total_festival_goers:
         interarrival_time = 0.20
 
-        group_size = random.randint(1,8)
+        group_size = np.random.randint(1,7)
+        
 
         remaining_people = total_festival_goers - festival_goer
 
@@ -53,10 +50,10 @@ def run_festival(env, servers, total_festival_goers, festival):
         for person in range(group_size):
                 yield env.timeout(interarrival_time)
                 env.process(go_to_festival(env, festival))
-                print(interarrival_time)
+                #print(interarrival_time)
             
         festival_goer += group_size
-        print(festival_goer)
+        #print(festival_goer)
 
         if festival_goer >= total_festival_goers:
             break
