@@ -3,6 +3,8 @@ import json
 import time
 import simpy
 import numpy as np
+import sys
+print(sys.path)
 
 #from Simple_Festival import Festival, go_to_festival, run_festival
 #from Normal_Festival import Festival, go_to_festival, run_festival
