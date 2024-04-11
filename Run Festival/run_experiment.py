@@ -38,7 +38,7 @@ def run_experiment(num_runs):
     df_std_waiting_times = pd.DataFrame(std_waiting_times).T
     #print(df_std_waiting_times)
 
-    a = df_mean_waiting_times.to_json('RESULTS_Simple_Model.json')
+    a = df_mean_waiting_times.to_json('RESULTS_Poisson_Model.json')
  
 
 
