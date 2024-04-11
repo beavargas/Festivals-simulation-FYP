@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./Run Festival/Types of Festivals"
+    ]
+}
