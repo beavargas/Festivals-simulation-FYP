@@ -4,9 +4,9 @@ import time
 import simpy
 import numpy as np
 
-from Simple_Festival import Festival, go_to_festival, run_festival
-from Normal_Festival import Festival, go_to_festival, run_festival
-from MultiModal_arrivals_festival import Festival, go_to_festival, run_festival, bus_arrivals
+#from Simple_Festival import Festival, go_to_festival, run_festival
+#from Normal_Festival import Festival, go_to_festival, run_festival
+from Multimodal_Festival import Festival, go_to_festival, run_festival, bus_arrivals
 
 # The following function loads the config.json file
 def load_config(file_path):
