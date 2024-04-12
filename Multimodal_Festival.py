@@ -34,11 +34,11 @@ class Festival(object):
         yield self.env.timeout(scanning_time)
 
     def get_waiting_times_per_server(self):
+        print("in get waiting times per server")
         #return(self.get_waiting_times_per_server)
         return np.array(self.waiting_times_per_server)
 
 def go_to_festival(env, festival):
-
     arrival_time = env.now # Record the current simulation time
 
     # Perform security check
@@ -53,6 +53,7 @@ def go_to_festival(env, festival):
     return festival_goer_waiting_time
 
 def bus_arrivals(env, festival, bus_capacity, bus_interarrival_time):
+    
     while True:
         yield env.timeout(bus_interarrival_time)
         for _ in range(bus_capacity):
@@ -60,10 +61,15 @@ def bus_arrivals(env, festival, bus_capacity, bus_interarrival_time):
 
 def run_festival(env, servers, bus_capacity, bus_interarrival_time, lamda_interarrival, total_festival_goers, mean_group_size, std_group_size, festival):
     festival_goer = 0
-
-    env.process(bus_arrivals(env, festival, bus_capacity, bus_interarrival_time ))
+    bus_arrival = env.now
 
     while festival_goer <= total_festival_goers:
+
+        if festival_goer + 20 <= total_festival_goers and bus_arrival - env.now > 30:
+            env.process(bus_arrivals(env, festival, bus_capacity, bus_interarrival_time ))
+            festival_goer += bus_capacity
+            bus_arrival = env.now
+       
         walking_interarrival_time = max(0, np.random.poisson(lamda_interarrival))
 
         group_size = max(1, round(np.random.normal(mean_group_size, std_group_size)))
@@ -73,12 +79,14 @@ def run_festival(env, servers, bus_capacity, bus_interarrival_time, lamda_intera
         group_size = min(group_size, remaining_people)
     
         for person in range(group_size):
+                
                 yield env.timeout(walking_interarrival_time)
                 env.process(go_to_festival(env, festival))
                 #print(interarrival_time)
-            
         festival_goer += group_size
-        #print(festival_goer)
+        
+        
+        print(festival_goer)
 
         if festival_goer >= total_festival_goers:
             break

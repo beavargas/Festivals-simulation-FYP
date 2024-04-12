@@ -3,8 +3,7 @@ import json
 import time
 import simpy
 import numpy as np
-import sys
-print(sys.path)
+
 
 #from Simple_Festival import Festival, go_to_festival, run_festival
 #from Normal_Festival import Festival, go_to_festival, run_festival
@@ -24,7 +23,7 @@ def main():
     simulation_data = np.zeros(config["total_festival_goers"])
     
     for servers in config["server_values"]:
-        #print("new servers round")
+        print("new servers round")
         server_i_data = []
 
         #random.seed(42)
@@ -62,6 +61,9 @@ def main():
         #simulation_data = np.vstack((simulation_data, waiting_time_i_servers))
         #print("simualtion data")
         #print(simulation_data)
+        print("Shape of simulation_data:", simulation_data.shape)
+        print("Shape of waiting_time_i_servers:", waiting_time_i_servers.shape)
+
 
     
     simulation_data = simulation_data[1:] # to remove first row of zeros
