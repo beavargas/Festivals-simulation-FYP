@@ -34,7 +34,7 @@ class Festival(object):
         yield self.env.timeout(scanning_time)
 
     def get_waiting_times_per_server(self):
-        print("in get waiting times per server")
+        #print("in get waiting times per server")
         #return(self.get_waiting_times_per_server)
         return np.array(self.waiting_times_per_server)
 
@@ -86,7 +86,7 @@ def run_festival(env, servers, bus_capacity, bus_interarrival_time, lamda_intera
         festival_goer += group_size
         
         
-        print(festival_goer)
+        #print(festival_goer)
 
         if festival_goer >= total_festival_goers:
             break
