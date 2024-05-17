@@ -1,6 +1,10 @@
 # Final-Year-Project
 Repository containing the models developed as part of my Final Year Project for the module EMAT5000
 
-main.py contains the simple discrete model
+Theoretical models:
+SSDA (Single Server Discrete Arrival) model - Simple_Festival.py
+MSPDA (Multiple Server Poisson Distributed Arrivals) model - Poisson_Festival.py
+MMA (Multi-Modal Arrivals) model - Multimodal_Festival.py
 
-main_normaldistribution.py contains the model with a normal distribution for the interarrival time and the server time
+Case study:
+Visuals_case_study_simulation.py
