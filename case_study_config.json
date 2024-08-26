@@ -2,7 +2,7 @@
     "total_festival_goers": 1935,
     "initial_waiting": 600,
     "simulation_duration": 8500000,
-    "servers": [1, 2, 3, 4, 5],
+    "servers": 2,
 
     "mean_arrival_high": 35.71964359781102,
     "std_arrival_high": 18.936447689661954,
@@ -15,13 +15,14 @@
     "mean_group_size": 3,
     "std_group_size": 1,
 
-    "mean_security_time_short": 60,
+    "mean_security_time_short": 72,
     "std_security_time_short": 20,
-    "mean_security_time_long": 170,
+    "mean_security_time_long": 120,
     "std_security_time_long": 50,
   
-    "mean_scan_time": 60,
-    "std_scan_time": 20
+    "mean_scan_time": 58,
+    "std_scan_time": 30
+
 
 
 
