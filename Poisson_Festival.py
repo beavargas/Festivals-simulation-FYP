@@ -19,6 +19,7 @@ class Festival(object):
         self.waiting_times_per_server = []
         self.total_festival_goers = total_festival_goers
     
+    
     def security_check(self):
         #security_time = max(0, np.random.normal(self.mean_security_time, self.std_security_time))
         if np.random.rand() < 0.90:  # randomly select between short and long scan
